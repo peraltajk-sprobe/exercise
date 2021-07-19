@@ -9,8 +9,9 @@ const GroupSelectInput = ({ register, index, selectDefaultValue }) => {
     }
 
     useEffect(() => {
+		
         if (selectDefaultValue && selectDefaultValue.hasOwnProperty("components")) {
-            if (selectDefaultValue.components[index].type === "image") {
+            if (selectDefaultValue.components[index] && selectDefaultValue.components[index].type === "image") {
                 setComponentType("image");
             } else {
                 setComponentType("text");
