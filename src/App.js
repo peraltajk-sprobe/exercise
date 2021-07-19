@@ -1,6 +1,7 @@
 import React from 'react';
 import './App.css';
 import { FormContextProvider, useHookReducer } from './hooks';
+import ReactJson from 'react-json-view';
 import Form from './components/form';
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
             </div>
           }
         </div>
+        <ReactJson src={rangeList} displayDataTypes={false} />
       </div>
     </FormContextProvider>
   );
