@@ -1,24 +1,37 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import { FormContextProvider, useHookReducer } from './hooks';
+import Form from './components/form';
 
-function App() {
+const App = () => {
+  const [state, dispatch] = useHookReducer();
+  const { rangeList, activeItem } = state;
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <FormContextProvider value={{state, dispatch}}>
+      <div className="container">
+        <Form />
+        <div className="range-container">
+          <div className="range-list">
+            {rangeList.map(data => (
+              <div key={data.id} className="range-list-item">
+                  <div className="range-details">
+                    {data.label}
+                  </div>
+                  <button onClick={() => dispatch({ type: 'viewItem', payload: data.id })}>View</button>
+                  <button onClick={() => dispatch({ type: 'delete', payload: data.id })}>Delete</button>
+              </div>
+            ))
+            }
+          </div>
+          {Object.keys(activeItem).length !== 0 &&
+            <div className="range-item">
+              <Form defaultValues={activeItem} />
+            </div>
+          }
+        </div>
+      </div>
+    </FormContextProvider>
   );
 }
 
