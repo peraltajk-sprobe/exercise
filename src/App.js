@@ -1,5 +1,6 @@
 import React from 'react';
 import './App.css';
+import './index.css';
 import { FormContextProvider, useHookReducer } from './hooks';
 import ReactJson from 'react-json-view';
 import Form from './components/form';
@@ -10,7 +11,7 @@ const App = () => {
 
   return (
     <FormContextProvider value={{state, dispatch}}>
-      <div className="container">
+      <div className="flex flex-1 flex-col">
         <Form />
         <div className="range-container">
           <div className="range-list">

@@ -39,42 +39,71 @@ const Form = (props) => {
     }, [reset, props.defaultValues])
 
     return (
-        <form onSubmit={handleSubmit(onClickSubmit)}>
-            <input {...register("id")} name="id" id="id" hidden />
-            <label htmlFor="label">Range Label:</label>
-            <input {...register("label", { required: "Please enter Label." })} name="label" id="label" type="text" />
-            <label htmlFor="width">Width</label>
-            <input {...register("width")} name="width" id="width" type="number" />
-            <label htmlFor="height">Height</label>
-            <input {...register("height")} name="height" id="height" type="number" />
-            <label htmlFor="xaxis">X-Axis</label>
-            <input {...register("xaxis")} name="xaxis" id="xaxis" type="number" />
-            <label htmlFor="yaxis">Y-Axis</label>
-            <input {...register("yaxis")} name="yaxis" id="yaxis" type="number" />
-            {
-                fields.map((field, index) => (
-                    <div key={field.id}>
-                        <input type="hidden" {...register(`components.${index}.id`)} name={`components.${index}.id`} id={`components.${index}.id`} defaultValue={index} />
-                        <label htmlFor={`components.${index}.label`}>Component Label:</label>
-                        <input type="text" {...register(`components.${index}.label`)} name={`components.${index}.label`} 
-                            id={`components.${index}.label`} defaultValue={field.label} />
-                        <GroupSelectInput register={register} index={ index } selectDefaultValue={props.defaultValues} />
-                        <label htmlFor={`components.${index}.width`}>Width</label>
-                        <input {...register(`components.${index}.width`)} name={`components.${index}.width`} id={`components.${index}.width`} type="number" />
-                        <label htmlFor={`components.${index}.height`}>Height</label>
-                        <input {...register(`components.${index}.height`)} name={`components.${index}.height`} id={`components.${index}.height`} type="number" />
-                        <label htmlFor={`components.${index}.xaxis`}>X-Axis</label>
-                        <input {...register(`components.${index}.xaxis`)} name={`components.${index}.xaxis`} id={`components.${index}.xaxis`} type="number" />
-                        <label htmlFor={`components.${index}.yaxis`}>Y-Axis</label>
-                        <input {...register(`components.${index}.yaxis`)} name={`components.${index}.yaxis`} id={`components.${index}.yaxis`} type="number" />
-                        <button onClick={() => remove(index)}> Remove </button>
-                    </div>
-                ))
-            }
-            <button type="button" onClick={() => append({label: ""})}>Add Component</button>
-            <button type="submit"> 
-                {props.defaultValues ? "Update" : "Create"}
-            </button>
+        <form onSubmit={handleSubmit(onClickSubmit)} className="flex flex-col">
+            <div className={`flex ${props.defaultValues ? 'flex-col' : 'flex-row items-center'} justify-start gap-x-4`}>
+                <input {...register("id")} name="id" id="id" hidden />
+                <div>
+                    <label htmlFor="label">Range Label: </label>
+                    <input {...register("label", { required: "Please enter Label." })} name="label" id="label" type="text" />
+                </div>
+                <div>
+                    <label htmlFor="width">Width: </label>
+                    <input {...register("width")} name="width" id="width" type="number" />
+                </div>
+                <div>
+                    <label htmlFor="height">Height: </label>
+                    <input {...register("height")} name="height" id="height" type="number" />
+                </div>
+                <div>
+                    <label htmlFor="xaxis">X-Axis: </label>
+                    <input {...register("xaxis")} name="xaxis" id="xaxis" type="number" />
+                </div>
+                <div>
+                    <label htmlFor="yaxis">Y-Axis: </label>
+                    <input {...register("yaxis")} name="yaxis" id="yaxis" type="number" />
+                </div>
+            </div>
+           
+            <div>
+                {
+                    fields.map((field, index) => (
+                        <div key={field.id} className={`flex gap-y-4 ${props.defaultValues ? 'flex-col' : 'flex-row items-center'}`}>
+                            <input type="hidden" {...register(`components.${index}.id`)} name={`components.${index}.id`} id={`components.${index}.id`} defaultValue={index} />
+                            <div>
+                                <label htmlFor={`components.${index}.label`}>Component Label: </label>
+                                <input type="text" {...register(`components.${index}.label`)} name={`components.${index}.label`} 
+                                    id={`components.${index}.label`} defaultValue={field.label} />
+                            </div>
+                            <GroupSelectInput register={register} index={ index } selectDefaultValue={props.defaultValues} />
+                            <div>
+                                <label htmlFor={`components.${index}.width`}>Width: </label>
+                                <input {...register(`components.${index}.width`)} name={`components.${index}.width`} id={`components.${index}.width`} type="number" />
+                            </div>
+                            <div>
+                                <label htmlFor={`components.${index}.height`}>Height: </label>
+                                <input {...register(`components.${index}.height`)} name={`components.${index}.height`} id={`components.${index}.height`} type="number" />
+                            </div>
+                            <div>
+                                <label htmlFor={`components.${index}.xaxis`}>X-Axis: </label>
+                                <input {...register(`components.${index}.xaxis`)} name={`components.${index}.xaxis`} id={`components.${index}.xaxis`} type="number" />
+                            </div>
+                            <div>
+                                <label htmlFor={`components.${index}.yaxis`}>Y-Axis: </label>
+                                <input {...register(`components.${index}.yaxis`)} name={`components.${index}.yaxis`} id={`components.${index}.yaxis`} type="number" />
+                            </div>
+                            <button onClick={() => remove(index)} className="p-2 bg-red-200"> Remove </button>
+                        </div>
+                    ))
+                }
+            </div>
+            
+            <div className="flex flex-row">
+                <button type="button" onClick={() => append({label: ""})} className="p-2">Add Component</button>
+                <button type="submit" className="p-2"> 
+                    {props.defaultValues ? "Update" : "Create"}
+                </button>
+            </div>
+            
         </form>
     )
 }
