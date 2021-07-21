@@ -21,20 +21,24 @@ const GroupSelectInput = ({ register, index, selectDefaultValue }) => {
 
     return (
         <>
-        <select {...register(`components.${index}.type`)} onChange={(e) => onChangeType(e)}>
-            <option value="text">text</option>
-            <option value="image">image</option>
-        </select>
+        <div className="md:flex md:items-center gap-x-2">
+            <label className="md:w-3/5">Select Type: </label>
+            <select {...register(`components.${index}.type`)} onChange={(e) => onChangeType(e)} className="w-full">
+                <option value="text">text</option>
+                <option value="image">image</option>
+            </select>
+        </div>
+        
         {componentType === "text" ? (
-                <>
-                    <label htmlFor={`components.${index}.content`}>Content:</label>
+                <div className="md:flex md:items-center gap-x-2">
+                    <label htmlFor={`components.${index}.content`} className="md:w-3/5">Content:</label>
                     <input {...register(`components.${index}.content`)} name={`components.${index}.content`} id={`components.${index}.content`} type="text" />
-                </>
+                </div>
         ): (
-                <>
-                    <label htmlFor={`components.${index}.url`}>URL:</label>
+                <div className="md:flex md:items-center gap-x-2">
+                    <label htmlFor={`components.${index}.url`} className="md:w-3/5">URL:</label>
                     <input {...register(`components.${index}.url`)} name={`components.${index}.url`} id={`components.${index}.url`} type="text" />
-                </>
+                </div>
         )}
         </>
     )

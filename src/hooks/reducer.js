@@ -5,12 +5,18 @@ const reducer = (state, action) => {
         case 'create':
             return {
                 ...state,
-                rangeList: [...state.rangeList, {...action.payload, id: `${state.rangeList.length + 1}`}]
+                rangeList: [...state.rangeList, {...action.payload, id: `${state.rangeList.length + 1}`}],
+                isModalOpen: false
             }
         case 'viewItem':
             return {
                 ...state,
                 activeItem: state.rangeList.find(data => data.id === action.payload)
+            }
+        case 'setModal':
+            return {
+                ...state,
+                isModalOpen: action.payload
             }
         case 'update':
             return {
@@ -33,4 +39,4 @@ const reducer = (state, action) => {
     }
 }
 
-export const useHookReducer = () => useReducer(reducer, { rangeList: [], activeItem: {} });
+export const useHookReducer = () => useReducer(reducer, { rangeList: [], activeItem: {}, isModalOpen: false });
