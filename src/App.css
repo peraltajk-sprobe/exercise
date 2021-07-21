@@ -26,8 +26,3 @@ input, button, select {
 .range-details {
  margin: auto;
 }
-
-.range-list-item {
-  border: 1px solid #333;
-  padding: 5px;
-}

@@ -1,48 +1,30 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useForm, useFieldArray } from "react-hook-form";
-import { useFormContext } from '../hooks';
-import GroupSelectInput from './GroupSelectInput';
+import { useFormContext } from '../../hooks';
+import GroupSelectInput from '../GroupSelectInput';
 import PropTypes  from 'prop-types';
-import 'twin.macro'
 
-const Form = (props) => {
-    const { dispatch } = useFormContext();
-    const { register, control, handleSubmit, reset } = useForm({ defaultValues: props.defaultValues });
-    const { fields, append, remove } = useFieldArray({
+const RangeForm = (props) => {
+    const { state ,dispatch } = useFormContext();
+    const { activeItem } = state;
+    const { register, control, handleSubmit } = useForm({ defaultValues: props.data });
+    const { fields } = useFieldArray({
         control,
         name: "components",
         keyName: "id"
     });
 
-    /**
-     * 
-     * @param {object} data
-     * Creates new item or update item
-     * @return void 
-     */
     const onClickSubmit = (data) => {
-        // check if new item else update item
-        if (data.id === "") {
-            dispatch({type: 'create', payload: data});
-            reset();
-        } else {
-            dispatch({type: 'update', payload: data});
+        dispatch({type: 'update', payload: data});
+        if (data.id === activeItem.id) {
+            dispatch({ type: 'viewItem', payload: props.data.id })
         }
     }
-
-
-    /**
-     * reset default values when selecting item
-     * 
-     */
-    useEffect(() => {
-        reset(props.defaultValues)
-    }, [reset, props.defaultValues])
-
+    
     return (
-        <div className="flex flex-0 flex-col z-10 overflow-auto items-center">
+        <div className="flex flex-row gap-x-4">
             <form onSubmit={handleSubmit(onClickSubmit)} className="flex flex-col gap-y-4">
-                <div className="grid gap-x-4 gap-y-4 grid-rows-3 grid-flow-col">
+                <div className="grid gap-x-4 gap-y-4 grid-rows-2 grid-flow-col">
                     <input {...register("id")} name="id" id="id" hidden />
                     <div className="flex flex-col justify-start">
                         <label htmlFor="label" className="text-sm">Range Label: </label>
@@ -69,11 +51,10 @@ const Form = (props) => {
                         <input {...register("zaxis", { valueAsNumber: true })} name="zaxis" id="zaxis" type="number" />
                     </div>
                 </div>
-            
-                <div className="flex flex-col gap-y-4">
+                <div>
                     {
                         fields.map((field, index) => (
-                            <div key={field.id} className="flex flex-col gap-y-4">
+                            <div key={field.id} className="flex flex-col gap-y-4 bg-yellow-100 p-2 border-2 border-yellow-400">
                                 <div className="grid gap-x-4 gap-y-4 grid-rows-3 grid-flow-col">
                                     <input type="hidden" {...register(`components.${index}.id`)} name={`components.${index}.id`} id={`components.${index}.id`} defaultValue={index} />
                                     <div className="flex flex-col justify-start">
@@ -81,7 +62,7 @@ const Form = (props) => {
                                         <input type="text" {...register(`components.${index}.label`)} name={`components.${index}.label`} 
                                             id={`components.${index}.label`} defaultValue={field.label} />
                                     </div>
-                                    <GroupSelectInput register={register} index={ index } selectDefaultValue={props.defaultValues} />
+                                    <GroupSelectInput register={register} index={ index } selectDefaultValue={props.data} />
                                     <div className="flex flex-col justify-start">
                                         <label htmlFor={`components.${index}.width`} className="text-sm">Width: </label>
                                         <input {...register(`components.${index}.width`, { valueAsNumber: true })} name={`components.${index}.width`} id={`components.${index}.width`} type="number" />
@@ -103,25 +84,22 @@ const Form = (props) => {
                                         <input {...register(`components.${index}.zaxis`, { valueAsNumber: true })} name={`components.${index}.zaxis`} id={`components.${index}.zaxis`} type="number" />
                                     </div>
                                 </div>
-                                <button onClick={() => remove(index)} className="p-2 bg-red-200"> Remove </button>
                             </div>
                         ))
                     }
                 </div>
-                
-                <div className="flex flex-row m-3 gap-x-2">
-                    <button type="button" onClick={() => append({label: ""})} className="p-2">Add Component</button>
-                    <button type="submit" className="p-2"> 
-                        {props.defaultValues ? "Update" : "Create"}
-                    </button>
-                </div>
+                <button type="button" onClick={() => dispatch({ type: 'viewItem', payload: props.data.id })}>View</button>
+                <button type="submit">Update</button>
+                <button type="button">Delete</button>
             </form>
         </div>
     )
 }
 
-Form.propTypes = { 
-    defaultValues: PropTypes.object 
+
+RangeForm.propTypes = { 
+    data: PropTypes.object 
 }
 
-export default Form;
+
+export default RangeForm;

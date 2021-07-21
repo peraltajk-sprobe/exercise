@@ -27,7 +27,7 @@ const reducer = (state, action) => {
                     } else {
                         return data
                     }
-                })
+                }),
             }
         case 'delete': 
             return {
