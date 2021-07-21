@@ -3,7 +3,7 @@ import './App.css';
 import './index.css';
 import { FormContextProvider, useHookReducer } from './hooks';
 import Modal from './components/Modal';
-import { Stage, Text, Layer } from 'react-konva';
+import { Stage, Text, Layer, Rect } from 'react-konva';
 import URLImage from './components/Konva/URLImage';
 // import ReactJson from 'react-json-view';
 import Form from './components/form';
@@ -13,6 +13,7 @@ const App = () => {
   const [state, dispatch] = useHookReducer();
   const stageRef = useRef(null);
   const { rangeList, activeItem, isModalOpen } = state;
+  console.log(activeItem)
 
   return (
     <FormContextProvider value={{state, dispatch}}>
@@ -35,17 +36,20 @@ const App = () => {
           </div>
           {activeItem && (
             <Stage width={activeItem.width} height={activeItem.height} ref={stageRef} text="asdasd">
+                <Layer>
+                  <Rect width={activeItem.width} height={activeItem.height} x={activeItem.xaxis} y={activeItem.yaxis} fill="green" strokeWidth={2} />
                   {activeItem.hasOwnProperty("components") && (
                     activeItem.components.map(data => (
-                      <Layer key={data.id}>
+                      <div key={data.id}>
                           {data.type === "text" ? (
                             <Text text={data.content} height={data.height} width={data.height} x={data.xaxis} y={data.yaxis} />
                           ) :(
                             <URLImage x={data.xaxis} y={data.yaxis} width={data.width} height={data.height} image={data.url} />
                           )}
-                      </Layer>
+                      </div>
                     ))
                   )}
+                </Layer>
             </Stage>
           )}
           
