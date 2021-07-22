@@ -20,7 +20,6 @@ const App = () => {
           <button type="button" className="p-2 bg-green-500 text-white border-green-700 border-2" onClick={() => dispatch({ type: 'setModal', payload: true})}>Create</button>
         </div>
         {isModalOpen && <Modal isOpen={isModalOpen}> <CreateForm /> </Modal>}
-        {/* <Form /> */}
         <div className="range-container">
           <div className="range-list">
             {rangeList.map(data => (

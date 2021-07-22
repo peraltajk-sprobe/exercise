@@ -22,6 +22,13 @@ const RangeDetailForm = (props) => {
             dispatch({ type: 'viewItem', payload: props.data.id })
         }
     }
+
+    const onClickDelete = (id) => {
+        dispatch({type: 'delete', payload: id});
+        if (id === activeItem.id) {
+            dispatch({ type: 'viewItem', payload: id })
+        }
+    }
     
     return (
         <div className="flex flex-row gap-x-4">
@@ -56,7 +63,7 @@ const RangeDetailForm = (props) => {
                 </div>
                 <button type="button" onClick={() => dispatch({ type: 'viewItem', payload: props.data.id })}>View</button>
                 <button type="submit">Update</button>
-                <button type="button">Delete</button>
+                <button type="button" onClick={() => onClickDelete(props.data.id)}>Delete</button>
             </Form>
         </div>
     )
