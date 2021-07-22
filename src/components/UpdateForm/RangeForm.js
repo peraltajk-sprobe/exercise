@@ -8,7 +8,7 @@ const RangeForm = (props) => {
     const { state ,dispatch } = useFormContext();
     const { activeItem } = state;
     const { register, control, handleSubmit } = useForm({ defaultValues: props.data });
-    const { fields } = useFieldArray({
+    const { fields, remove } = useFieldArray({
         control,
         name: "components",
         keyName: "id"
@@ -84,6 +84,7 @@ const RangeForm = (props) => {
                                         <input {...register(`components.${index}.zaxis`, { valueAsNumber: true })} name={`components.${index}.zaxis`} id={`components.${index}.zaxis`} type="number" />
                                     </div>
                                 </div>
+                                <button onClick={() => remove(index)} className="p-2 bg-red-200"> Remove </button>
                             </div>
                         ))
                     }
